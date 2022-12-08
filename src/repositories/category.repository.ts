@@ -29,27 +29,27 @@ export class CategoryRepository extends DefaultCrudRepository<
 
   async createNewCategory(categoryToCreate: Omit<Category, 'id'>): Promise<Category> {
     const {
-      code, 
-      name, 
-      description, 
+      code,
+      name,
+      description,
       isActive
     } = categoryToCreate;
 
     const foundItem = await this
     .execute(`
       INSERT INTO categories (
-        code, categoryName, description, isActive
+        code, name, description, isActive
         )
       VALUES (
         '${code}', '${name}', '${description}', ${isActive}
       )
     `);
-  
+
     return new Category(foundItem)
   }
   //Pending
   async updateCategoryById(id: number, categoryUpdates: Category): Promise<any> {
-    let setString: string = "";
+    let setString = "";
     for (const [key, value]  of Object.entries(categoryUpdates)) {
       let stringToAppend = "";
       if (key === 'isActive') {
@@ -62,15 +62,15 @@ export class CategoryRepository extends DefaultCrudRepository<
     setString = setString.slice(0, -1);
     const query = `UPDATE categories SET ${setString} WHERE id = ${id}`
 
-    return await this.execute(query)
+    return this.execute(query)
   }
 
   async activateCategory(id: number): Promise<any> {
-    return await this.execute('UPDATE categories SET isActive = true WHERE id = ?', [id]);
+    return this.execute('UPDATE categories SET isActive = true WHERE id = ?', [id]);
   }
 
   async inactivateCategory(id: number): Promise<any> {
-    return await this.execute('UPDATE categories SET isActive = false WHERE id = ?', [id]);
+    return this.execute('UPDATE categories SET isActive = false WHERE id = ?', [id]);
   }
-} 
+}
 
