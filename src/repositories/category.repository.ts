@@ -45,7 +45,7 @@ export class CategoryRepository extends DefaultCrudRepository<
       )
     `);
 
-    return new Category(foundItem)
+    return new Category(categoryToCreate)
   }
   //Pending
   async updateCategoryById(id: number, categoryUpdates: Category): Promise<any> {

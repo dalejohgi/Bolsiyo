@@ -30,7 +30,7 @@ export class ProductRepository extends DefaultCrudRepository<
     return items.map((item: Object) => new Product(item));
   }
 
-  async getProductsWithCompanies(productId: number): Promise<Product> {
+  async getProductsWithCompanies(productId: number): Promise<any> {
     const item = await this.execute(
       '\
       SELECT p.*, co.name AS companyName, co.address AS companyAddress \
@@ -41,7 +41,8 @@ export class ProductRepository extends DefaultCrudRepository<
     ',
       [productId],
     );
-    return new Product(item);
+
+    return item[0];
   }
 
   async createNewProduct(
@@ -59,7 +60,7 @@ export class ProductRepository extends DefaultCrudRepository<
     } = productToCreate;
 
     const createdItem = await this.execute(`
-      INSERT INTO categories (
+      INSERT INTO products (
         code, name, description, brand, categoryId, quantity, price, companyId
         )
       VALUES (
@@ -71,7 +72,7 @@ export class ProductRepository extends DefaultCrudRepository<
   }
   //Pending
   async updateProductById(id: number, productUpdates: Product): Promise<any> {
-    let setString: string = '';
+    let setString = '';
     for (const [key, value] of Object.entries(productUpdates)) {
       let stringToAppend = '';
       if (key in ['categoryId', 'quantity', 'price']) {
@@ -84,11 +85,11 @@ export class ProductRepository extends DefaultCrudRepository<
     setString = setString.slice(0, -1);
     const query = `UPDATE products SET ${setString} WHERE id = ${id}`;
 
-    return await this.execute(query);
+    return this.execute(query);
   }
 
   async deleteProductById(id: number): Promise<any> {
-    return await this.execute(
+    return this.execute(
       'UPDATE products SET deletedAt = CURRENT_TIMESTAMP WHERE id = ?',
       [id],
     );

@@ -49,7 +49,7 @@ export class ProductController {
   })
   async findById(
     @param.path.number('id') id: number,
-  ): Promise<Product> {
+  ): Promise<any> {
     return this.productRepository.getProductsWithCompanies(id);
   }
 
