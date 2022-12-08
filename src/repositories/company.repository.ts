@@ -8,9 +8,7 @@ export class CompanyRepository extends DefaultCrudRepository<
   typeof Company.prototype.id,
   CompanyRelations
 > {
-  constructor(
-    @inject('datasources.mysql') dataSource: MysqlDataSource,
-  ) {
+  constructor(@inject('datasources.mysql') dataSource: MysqlDataSource) {
     super(Company, dataSource);
   }
 }

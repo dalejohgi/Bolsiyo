@@ -7,7 +7,6 @@ export class Product extends Entity {
     id: true,
     generated: true,
   })
-
   id?: number;
 
   @property({
@@ -28,7 +27,7 @@ export class Product extends Entity {
     required: true,
     jsonSchema: {
       minLength: 4,
-      errorMessage: 'Name must bu at least 4 characters'
+      errorMessage: 'Name must bu at least 4 characters',
     },
   })
   name: string;
@@ -71,7 +70,6 @@ export class Product extends Entity {
     required: true,
   })
   companyId: number;
-
 
   constructor(data?: Partial<Product>) {
     super(data);

@@ -16,7 +16,7 @@ export class Category extends Entity {
       unique: true,
     },
     jsonSchema: {
-      pattern: /([A-Z]|[a-z]|[0-9])/.source
+      pattern: /([A-Z]|[a-z]|[0-9])/.source,
     },
   })
   code: string;

@@ -1,19 +1,9 @@
+import {Filter, FilterExcludingWhere, repository} from '@loopback/repository';
 import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
   get,
   getModelSchemaRef,
-  patch,
-  put,
-  del,
+  param,
+  post,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -23,7 +13,7 @@ import {CompanyRepository} from '../repositories';
 export class CompanyController {
   constructor(
     @repository(CompanyRepository)
-    public companyRepository : CompanyRepository,
+    public companyRepository: CompanyRepository,
   ) {}
 
   @post('/companies')
@@ -44,7 +34,9 @@ export class CompanyController {
     })
     company: Omit<Company, 'id'>,
   ): Promise<any> {
-    return this.companyRepository.execute(`INSERT INTO companies (name, address) VALUES ('${company.name}', '${company.address}')`);
+    return this.companyRepository.execute(
+      `INSERT INTO companies (name, address) VALUES ('${company.name}', '${company.address}')`,
+    );
   }
 
   @get('/companies')
@@ -59,13 +51,12 @@ export class CompanyController {
       },
     },
   })
-  async find(
-    @param.filter(Company) filter?: Filter<Company>,
-  ): Promise<any> {
-    const companies = await this.companyRepository.execute('SELECT * FROM companies')
+  async find(@param.filter(Company) filter?: Filter<Company>): Promise<any> {
+    const companies = await this.companyRepository.execute(
+      'SELECT * FROM companies',
+    );
     return companies;
   }
-
 
   @get('/companies/{id}')
   @response(200, {
@@ -79,8 +70,11 @@ export class CompanyController {
   async findById(
     @param.path.number('id') id: number,
     // AH??
-    @param.filter(Company, {exclude: 'where'}) filter?: FilterExcludingWhere<Company>
+    @param.filter(Company, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Company>,
   ): Promise<any> {
-    return this.companyRepository.execute(`SELECT * FROM companies WHERE id = ${id}`);
+    return this.companyRepository.execute(
+      `SELECT * FROM companies WHERE id = ${id}`,
+    );
   }
 }

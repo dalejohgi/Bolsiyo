@@ -1,19 +1,10 @@
+import {FilterExcludingWhere, repository} from '@loopback/repository';
 import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  post,
-  param,
   get,
   getModelSchemaRef,
+  param,
   patch,
-  put,
-  del,
+  post,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -38,8 +29,7 @@ export class CategoryController {
       },
     },
   })
-  async find(
-  ): Promise<Category[]> {
+  async find(): Promise<Category[]> {
     return this.categoryRepository.getAllCategories();
   }
 
@@ -54,7 +44,8 @@ export class CategoryController {
   })
   async findCategoryById(
     @param.path.number('id') id: number,
-    @param.filter(Category, {exclude: 'where'}) filter?: FilterExcludingWhere<Category>
+    @param.filter(Category, {exclude: 'where'})
+    filter?: FilterExcludingWhere<Category>,
   ): Promise<Category> {
     return this.categoryRepository.findCategoryById(id);
   }
@@ -99,21 +90,21 @@ export class CategoryController {
     if (!foundCategory) {
       return;
     }
-    const updatedCategory = await this.categoryRepository.updateCategoryById(id, categoryUpdates);
-    return (updatedCategory);
-    
-  }//FIX THIS
+    const updatedCategory = await this.categoryRepository.updateCategoryById(
+      id,
+      categoryUpdates,
+    );
+    return updatedCategory;
+  }
 
   @get('/categories/activate/{id}')
   @response(200, {
     description: 'Activate category',
   })
-  async findAndActivateById(
-    @param.path.number('id') id: number
-  ): Promise<Category> {
+  async findAndActivateById(@param.path.number('id') id: number): Promise<any> {
     const foundCategory = this.categoryRepository.findCategoryById(id);
     if (!foundCategory) {
-      return foundCategory;
+      return;
     }
     return this.categoryRepository.activateCategory(id);
   }
@@ -123,13 +114,12 @@ export class CategoryController {
     description: 'Inctivate category',
   })
   async findAndInactivateById(
-    @param.path.number('id') id: number
-  ): Promise<Category> {
+    @param.path.number('id') id: number,
+  ): Promise<any> {
     const foundCategory = this.categoryRepository.findCategoryById(id);
     if (!foundCategory) {
-      return foundCategory;
+      return;
     }
     return this.categoryRepository.inactivateCategory(id);
   }
-
 }

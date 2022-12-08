@@ -1,13 +1,11 @@
+import {repository} from '@loopback/repository';
 import {
-  repository
-} from '@loopback/repository';
-import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
-  del,
+  post,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -17,7 +15,7 @@ import {ProductRepository} from '../repositories';
 export class ProductController {
   constructor(
     @repository(ProductRepository)
-    public productRepository : ProductRepository,
+    public productRepository: ProductRepository,
   ) {}
 
   @get('/products')
@@ -47,9 +45,7 @@ export class ProductController {
       },
     },
   })
-  async findById(
-    @param.path.number('id') id: number,
-  ): Promise<any> {
+  async findById(@param.path.number('id') id: number): Promise<any> {
     return this.productRepository.getProductsWithCompanies(id);
   }
 
@@ -91,7 +87,6 @@ export class ProductController {
   ): Promise<void> {
     await this.productRepository.updateProductById(id, productUpdates);
   }
-
 
   @del('/products/{id}')
   @response(204, {
